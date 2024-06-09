@@ -3,10 +3,7 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,17 +37,29 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        String query = """
-            INSERT INTO `%s` (`%s`,`%s`,`%s`)
-            VALUES ('%s', '%s', '%d');
-            """.formatted(TABLE_NAME, COLUMN_NAME, COLUMN_LASTNAME, COLUMN_AGE, name, lastName, age);
-        executeUpdate(query);
+        String query = "INSERT INTO `%s` (`%s`,`%s`,`%s`) VALUES (?, ?, ?);"
+            .formatted(TABLE_NAME, COLUMN_NAME, COLUMN_LASTNAME, COLUMN_AGE);
+        try (Connection connection = Util.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, name);
+            statement.setString(2, lastName);
+            statement.setByte(3, age);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
         System.out.printf("Saved user: %s\n", name);
     }
 
     public void removeUserById(long id) {
-        String query = "DELETE FROM `%s` WHERE `%s` = %d".formatted(TABLE_NAME, COLUMN_ID, id);
-        executeUpdate(query);
+        String query = "DELETE FROM `%s` WHERE `%s` = ?".formatted(TABLE_NAME, COLUMN_ID);
+        try(Connection connection = Util.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
         System.out.printf("Removed user with id: %d\n", id);
     }
 
