@@ -13,7 +13,7 @@ public class Util {
     private final static String DB_USERNAME_KEY = "db.username";
     private final static String DB_PASSWORD_KEY = "db.password";
     private final static String DB_DRIVER_KEY = "db.driver";
-    private static final Properties PROPERTIES = new Properties();
+    private final static Properties PROPERTIES = new Properties();
 
     static  {
         loadConfig();
