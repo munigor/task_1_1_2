@@ -13,7 +13,6 @@ import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
     private final Class<User> className = User.class;
-    private final String TABLE_NAME = SqlUtil.getTableName(className);
 
     static {
         System.out.println(UserDaoJDBCImpl.class.getName());

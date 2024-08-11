@@ -54,7 +54,7 @@ public class SqlUtil {
     }
 
     public static String getIDColumnName(Class<?> clazz) {
-        Optional<Field> f = Arrays.stream(User.class.getDeclaredFields())
+        Optional<Field> f = Arrays.stream(clazz.getDeclaredFields())
             .filter(field -> field.isAnnotationPresent(Id.class))
             .findFirst();
         return f.map(Field::getName).orElse(null);
