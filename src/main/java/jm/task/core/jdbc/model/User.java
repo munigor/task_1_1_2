@@ -1,21 +1,27 @@
 package jm.task.core.jdbc.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jm.task.core.jdbc.util.ColumnValue;
 
-@Table
+import javax.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ColumnValue(value = "int NOT NULL AUTO_INCREMENT PRIMARY KEY")
     private Long id;
 
     @Column
+    @ColumnValue(value = "VARCHAR(40) NOT NULL")
     private String name;
 
-    @Column
+    @Column(name = "last_name")
+    @ColumnValue(value = "VARCHAR(40) NOT NULL")
     private String lastName;
 
     @Column
+    @ColumnValue(value = "TINYINT NOT NULL")
     private Byte age;
 
     public User() {
